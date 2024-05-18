@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
@@ -13,10 +13,12 @@ const QuranSelector = () => {
   const [availableVerses, setAvailableVerses] = useState([]);
   const [selectedVersesArabic, setSelectedVersesArabic] = useState([]);
   const [arabicData, setArabicData] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const fetchVerses = async (chapterNumber) => {
     try {
+      setLoading(true);
       const response = await fetch(`https://api.alquran.cloud/v1/surah/${chapterNumber}`);
+      setLoading(false);
       if (!response.ok) {
         throw new Error('Failed to fetch verses');
       }
@@ -50,10 +52,10 @@ const QuranSelector = () => {
     const verseRange = `${startVerse}-${endVerse}`;
     setSelectedVerses([...selectedVerses, { chapter: selectedChapter, verses: verseRange }]);
     setSelectedVersesArabic((prev) => [
-      ...prev, 
-      { 
-        chapter: selectedChapterName, 
-        ayahs: arabicData.ayahs.slice(startVerse - 1, endVerse).map(a => ({ number: a.numberInSurah, text: a.text })) 
+      ...prev,
+      {
+        chapter: selectedChapterName,
+        ayahs: arabicData.ayahs.slice(startVerse - 1, endVerse).map(a => ({ number: a.numberInSurah, text: a.text }))
       }
     ]);
   };
@@ -62,12 +64,16 @@ const QuranSelector = () => {
     const updatedVerses = [...selectedVerses];
     updatedVerses.splice(index, 1);
     setSelectedVerses(updatedVerses);
+
+    const updatedArabicVerses = [...selectedVersesArabic];
+    updatedArabicVerses.splice(index, 1);
+    setSelectedVersesArabic(updatedArabicVerses);
   };
 
   const generatePDF = async () => {
     const pdfDoc = await PDFDocument.create();
     pdfDoc.registerFontkit(fontkit);
-  
+
     // Fetch the font
     const fontBytes = await fetch(nurehuda).then(res => res.arrayBuffer());
     const customFont = await pdfDoc.embedFont(fontBytes);
@@ -75,32 +81,32 @@ const QuranSelector = () => {
     const margin = 20; // 20px margin on each side
     const lineHeight = 10; // 10px space after each line
     const arabicLineHeight = 20; // increased space between Arabic lines
-  
+
     let page = pdfDoc.addPage();
     page.setFont(customFont);
     page.setFontSize(16);
-  
+
     let verticalPosition = page.getHeight() - margin; // Start from the top margin
-  
+
     const addNewPage = () => {
       page = pdfDoc.addPage();
       page.setFont(customFont);
       page.setFontSize(16);
       verticalPosition = page.getHeight() - margin;
     };
-  
+
     // Iterate over selected verses
     selectedVersesArabic.forEach((verse, index) => {
       const chapter = verse.chapter;
       const ayahs = verse.ayahs;
-  
+
       // Add chapter name to PDF
       verticalPosition -= 20; // Move down by 20px for chapter name
       if (verticalPosition < margin) {
         addNewPage();
         verticalPosition -= 20; // Move down by 20px for chapter name
       }
-  
+
       const chapterTextWidth = timesRomanFont.widthOfTextAtSize(chapter, 16);
       page.drawText(chapter, {
         x: (page.getWidth() - chapterTextWidth) / 2, // Center the chapter name
@@ -109,7 +115,7 @@ const QuranSelector = () => {
         font: timesRomanFont,
         color: rgb(0, 0, 0)
       });
-  
+
       // Add ayahs to PDF
       ayahs.forEach((ayah) => {
         verticalPosition -= (16 + arabicLineHeight); // Move down by font size + increased line height for each line
@@ -117,21 +123,21 @@ const QuranSelector = () => {
           addNewPage();
           verticalPosition -= (16 + arabicLineHeight); // Move down by font size + increased line height for each line
         }
-  
+
         const ayahNumberText = ayah.number.toString();
         const ayahText = ayah.text;
         const ayahTextWidth = customFont.widthOfTextAtSize(ayahText, 16);
         const numberTextWidth = timesRomanFont.widthOfTextAtSize(ayahNumberText, 12); // Width of the English number
-  
+
         // Draw the Arabic text
         page.drawText(ayahText, {
-          x: page.getWidth() - ayahTextWidth - margin -20, // Align Arabic text to the right
+          x: page.getWidth() - ayahTextWidth - margin - 20, // Align Arabic text to the right
           y: verticalPosition,
           size: 16,
           font: customFont,
           color: rgb(0, 0, 0)
         });
-  
+
         // Draw the English verse number, aligned to the right of the Arabic text
         page.drawText(ayahNumberText, {
           x: page.getWidth() - margin + 5, // Position English text just to the right of Arabic text
@@ -141,13 +147,13 @@ const QuranSelector = () => {
           color: rgb(0, 0, 0)
         });
       });
-  
+
       verticalPosition -= 20; // Add extra space after each chapter
       if (verticalPosition < margin) {
         addNewPage();
       }
     });
-  
+
     // Save the PDF
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -159,10 +165,9 @@ const QuranSelector = () => {
     a.click();
     document.body.removeChild(a);
   };
-  
 
   return (
-    <div className="p-4 lg:w-[50%] mx-auto">
+    <div className={`p-4 lg:w-[50%] mx-auto ${loading ? "opacity-50":"opacity-100"}`} >
       <div className="mb-4">
         <label htmlFor="chapter" className="block mb-1">Chapter:</label>
         <select
@@ -170,6 +175,7 @@ const QuranSelector = () => {
           className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
           value={selectedChapter}
           onChange={(e) => setSelectedChapter(e.target.value)}
+          disabled={loading}
         >
           <option value="">Select a chapter</option>
           {Array.from({ length: 114 }, (_, i) => (
@@ -186,6 +192,7 @@ const QuranSelector = () => {
             className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
             value={startVerse}
             onChange={(e) => setStartVerse(e.target.value)}
+            disabled={loading}
           >
             <option value="">Select start verse</option>
             {availableVerses?.map((verse) => (
@@ -202,6 +209,7 @@ const QuranSelector = () => {
             className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
             value={endVerse}
             onChange={(e) => setEndVerse(e.target.value)}
+            disabled={loading}
           >
             <option value="">Select end verse</option>
             {availableVerses?.map((verse) => (
@@ -210,15 +218,28 @@ const QuranSelector = () => {
           </select>
         </div>
       )}
-      <button className="btn btn-primary" onClick={handleAddVerse}>Add Verse</button>
-      {selectedVersesArabic?.length > 0 && <button className="btn btn-primary ml-4" onClick={generatePDF}>Generate PDF</button>}
+      <button className="btn btn-primary" disabled={loading} onClick={handleAddVerse}>Add Verse</button>
+      {selectedVersesArabic?.length > 0 && <button disabled={loading} className="btn btn-primary ml-4" onClick={generatePDF}>Generate PDF</button>}
       <div className="mt-4">
         {selectedVerses?.map((verse, index) => (
           <div key={index} className="mb-2 p-2 bg-gray-100 rounded">
             <p>Chapter: {verse.chapter}, Verses: {verse.verses}</p>
-            <button className="btn btn-sm btn-secondary mt-2" onClick={() => handleRemoveVerse(index)}>Remove</button>
+            <button disabled={loading} className="btn btn-sm btn-secondary mt-2" onClick={() => handleRemoveVerse(index)}>Remove</button>
           </div>
         ))}
+        <div>
+          {selectedVersesArabic.map((verse, index) => (
+            <div key={index} className="mb-4">
+              <h3 className="text-lg font-bold mb-2 text-center">{verse.chapter}</h3>
+              {verse.ayahs.map((ayah) => (
+                <div key={ayah.number} className="flex justify-end items-center">
+                  <span className="text-right arabic-font text-2xl my-3">{ayah.text}</span>
+                  <span className="text-right arabic-font  my-3 ml-2">({ayah.number})</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

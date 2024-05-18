@@ -2,7 +2,7 @@ import QuranSelector from "@/components/QuranSelector";
 
 const page = () => {
   return (
-    <div>
+    <div className="">
       <QuranSelector />
     </div>
   );

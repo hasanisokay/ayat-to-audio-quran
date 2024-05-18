@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Nurehuda';
+    src: url('/assets/font/noorehuda.ttf') format('truetype');
+    font-display: swap;
+  }
+  
+  .arabic-font {
+    font-family: 'Nurehuda', sans-serif;
+  }
