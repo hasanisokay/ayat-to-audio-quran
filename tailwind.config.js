@@ -9,6 +9,14 @@ module.exports = {
   plugins: [
     require('daisyui'),
   ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['var(--font-roboto)'],
+        mono: ['var(--font-noorehuda)'],
+      },
+    },
+  },
   daisyui: {
     themes: [ "cupcake"],
   },

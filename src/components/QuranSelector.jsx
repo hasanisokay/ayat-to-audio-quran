@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import fontkit from '@pdf-lib/fontkit';
-import nurehuda from '@/../assets/font/noorehidayat.ttf';
+import nurehuda from '@/../public/assets/font/noorehidayat.ttf';
+import quran1 from "@/../../public/assets/images/quran2.jpg";
+import Image from 'next/image';
 
 const QuranSelector = () => {
   const [selectedVerses, setSelectedVerses] = useState([]);
@@ -167,59 +169,74 @@ const QuranSelector = () => {
   };
 
   return (
-    <div className={`p-4 lg:w-[50%] mx-auto ${loading ? "opacity-50":"opacity-100"}`} >
-      <div className="mb-4">
-        <label htmlFor="chapter" className="block mb-1">Chapter:</label>
-        <select
-          id="chapter"
-          className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
-          value={selectedChapter}
-          onChange={(e) => setSelectedChapter(e.target.value)}
-          disabled={loading}
-        >
-          <option value="">Select a chapter</option>
-          {Array.from({ length: 114 }, (_, i) => (
-            <option key={i + 1} value={i + 1}>{i + 1}</option>
-          ))}
-        </select>
+    <div className={`p-4 lg:w-[50%] mx-auto ${loading ? "opacity-50" : "opacity-100"} border-2`}
+
+      style={{ fontFamily: 'var(--font-roboto)' }}
+    >
+      <div className='flex h-[300px] w-[300px] mx-auto items-center justify-center'>
+      <Image alt='quran'
+      src={quran1} 
+      width={400} 
+      height={200}
+      className='h-full w-full '
+      />
       </div>
-      {selectedChapterName && <p>Now Selecting from: {selectedChapterName}</p>}
-      {selectedChapter && (
+          <h1 className='text-center text-2xl'>Assalamu Alaykum</h1>
+      <div className='bg-quran'> 
         <div className="mb-4">
-          <label htmlFor="startVerse" className="block mb-1">Start Verse:</label>
+          <label htmlFor="chapter" className="block mb-1">Chapter:</label>
           <select
-            id="startVerse"
+            id="chapter"
             className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
-            value={startVerse}
-            onChange={(e) => setStartVerse(e.target.value)}
+            value={selectedChapter}
+            onChange={(e) => setSelectedChapter(e.target.value)}
             disabled={loading}
           >
-            <option value="">Select start verse</option>
-            {availableVerses?.map((verse) => (
-              <option key={verse} value={verse}>{verse}</option>
+            <option value="">Select a chapter</option>
+            {Array.from({ length: 114 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>{i + 1}</option>
             ))}
           </select>
         </div>
-      )}
-      {selectedChapter && (
-        <div className="mb-4">
-          <label htmlFor="endVerse" className="block mb-1">End Verse:</label>
-          <select
-            id="endVerse"
-            className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
-            value={endVerse}
-            onChange={(e) => setEndVerse(e.target.value)}
-            disabled={loading}
-          >
-            <option value="">Select end verse</option>
-            {availableVerses?.map((verse) => (
-              verse >= startVerse && <option key={verse} value={verse}>{verse}</option>
-            ))}
-          </select>
-        </div>
-      )}
-      <button className="btn btn-primary" disabled={loading} onClick={handleAddVerse}>Add Verse</button>
-      {selectedVersesArabic?.length > 0 && <button disabled={loading} className="btn btn-primary ml-4" onClick={generatePDF}>Generate PDF</button>}
+        {selectedChapterName && <p>Now Selecting from: {selectedChapterName}</p>}
+        {selectedChapter && (
+          <div className="mb-4">
+            <label htmlFor="startVerse" className="block mb-1">Start Verse:</label>
+            <select
+              id="startVerse"
+              className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
+              value={startVerse}
+              onChange={(e) => setStartVerse(e.target.value)}
+              disabled={loading}
+            >
+              <option value="">Select start verse</option>
+              {availableVerses?.map((verse) => (
+                <option key={verse} value={verse}>{verse}</option>
+              ))}
+            </select>
+          </div>
+        )}
+        {selectedChapter && (
+          <div className="mb-4">
+            <label htmlFor="endVerse" className="block mb-1">End Verse:</label>
+            <select
+              id="endVerse"
+              className="w-full rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200"
+              value={endVerse}
+              onChange={(e) => setEndVerse(e.target.value)}
+              disabled={loading}
+            >
+              <option value="">Select end verse</option>
+              {availableVerses?.map((verse) => (
+                verse >= startVerse && <option key={verse} value={verse}>{verse}</option>
+              ))}
+            </select>
+          </div>
+        )}
+        <button className="btn btn-primary" disabled={loading} onClick={handleAddVerse}>Add Verse</button>
+        {selectedVersesArabic?.length > 0 && <button disabled={loading} className="btn btn-primary ml-4" onClick={generatePDF}>Generate PDF</button>}
+
+      </div>
       <div className="mt-4">
         {selectedVerses?.map((verse, index) => (
           <div key={index} className="mb-2 p-2 bg-gray-100 rounded">
@@ -232,8 +249,10 @@ const QuranSelector = () => {
             <div key={index} className="mb-4">
               <h3 className="text-lg font-bold mb-2 text-center">{verse.chapter}</h3>
               {verse.ayahs.map((ayah) => (
-                <div key={ayah.number} className="flex justify-end items-center">
-                  <span className="text-right arabic-font text-2xl my-3">{ayah.text}</span>
+                <div key={ayah.number} className="flex justify-end items-start my-[20px]">
+                  <span
+                    style={{ fontFamily: 'var(--font-noorehuda)', fontSize: 26, lineHeight: 1.5, lineHeightStep: 2 }}
+                    className="text-right arabic-font ">{ayah.text}</span>
                   <span className="text-right arabic-font  my-3 ml-2">({ayah.number})</span>
                 </div>
               ))}

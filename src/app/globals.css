@@ -3,11 +3,17 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Nurehuda';
-    src: url('/assets/font/noorehuda.ttf') format('truetype');
+    font-family: 'noorehidayat';
+    src: url('/public/assets/font/noorehidayat.ttf') format('truetype');
     font-display: swap;
   }
   
   .arabic-font {
-    font-family: 'Nurehuda', sans-serif;
+    font-family: 'noorehidayat';
   }
+
+  /* .bg-quran{
+    background-image: url("./../../public/assets/images/quran1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  } */
