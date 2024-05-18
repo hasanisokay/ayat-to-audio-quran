@@ -8,7 +8,6 @@ import Image from 'next/image';
 // import html2canvas from 'html2canvas';
 import html2canvas from 'html2canvas-pro';
 import jsPDF from 'jspdf';
-import generatePDFFrom from '@/app/utils/takeShot';
 import Loader from './Loader';
 import getChapterName from '@/app/utils/getChapterName';
 // import { generatePDFFrom } from '@/app/utils/takeShot';
@@ -83,8 +82,7 @@ const QuranSelector = () => {
 
 
   const generatePDF = async () => {
-    return;
-    // return await generatePDFFrom();
+
     const pdfDoc = await PDFDocument.create();
     pdfDoc.registerFontkit(fontkit);
 
