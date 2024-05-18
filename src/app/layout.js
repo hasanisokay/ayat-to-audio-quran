@@ -9,6 +9,12 @@ const inter = Roboto({
   variable: '--font-roboto',
   weight: ['400', '700'],
 })
+// const DancingScript = dancingScript({
+//   subsets: ['latin'],
+//   display: 'swap',
+//   variable: '--font-dancing-script',
+//   weight: ['400', '700'],
+// })
 
 const myFont = localFont({
   src: "./../../public/assets/font/noorehuda.ttf",
@@ -25,7 +31,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${myFont.variable}`}>{children}</body>
+      <body className={`${inter.variable} ${myFont.variable} `}>{children}</body>
     </html>
   );
 }

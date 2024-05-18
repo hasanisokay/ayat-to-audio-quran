@@ -12,7 +12,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-roboto)'],
+        sans: ['var(--font-roboto)', 'var(--font-dancing-script)'  ],
         mono: ['var(--font-noorehuda)'],
       },
     },
