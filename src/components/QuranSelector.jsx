@@ -85,9 +85,10 @@ const QuranSelector = () => {
           className='h-full w-full '
         />
       </div>
-      <h1 className='text-center text-2xl'
+      <h1 className=' mt-4 text-center text-2xl'
         style={{ fontFamily: 'var(--font-dancing-script)' }}
-      >Welcome</h1>
+      >Welcome to Ayat 2 Pdf Creator</h1>
+      <p className='my-1 text-center'>Select chapter and then add verse. You can create pdf after adding verses.</p>
       {
         loading && <Loader />
       }
@@ -144,7 +145,8 @@ const QuranSelector = () => {
         )}
         <button className="btn btn-sm btn-primary" disabled={loading} onClick={handleAddVerse}>Add Verse</button>
       </div>
-      <button className='btn btn-sm btn-secondary mt-2' onClick={generatePDF}>Generate PDF</button>
+      {selectedVersesArabic?.length > 0 && <button disabled={loading} className='btn btn-sm btn-secondary mt-2' onClick={generatePDF}>Generate PDF</button>
+      }
       <div className="mt-4">
         {selectedVerses?.map((verse, index) => (
           <div key={index} className="mb-2 p-2 bg-gray-100 rounded">
@@ -154,7 +156,7 @@ const QuranSelector = () => {
         ))}
 
         <div id='arabic-content' className=''>
-          {selectedVersesArabic.map((verse, index) => (
+          {selectedVersesArabic?.map((verse, index) => (
             <div key={index} className="mb-6">
               <h3 className="text-lg font-bold mb-2 mt-4 text-center">{verse.chapter}</h3>
               {verse.ayahs.map((ayah) => (

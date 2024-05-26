@@ -8,7 +8,6 @@ const page = () => {
 
   return (
     <>
-    <p>Hi</p>
       <QuranSelector />
     </>
   );
