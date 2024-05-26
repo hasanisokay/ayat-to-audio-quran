@@ -21,7 +21,8 @@
     "pdfmake": "^0.2.10",
     "pdfmake-arabic": "^0.0.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "daisyui": "^4.11.1",

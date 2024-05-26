@@ -1,8 +1,13 @@
-import QuranSelector from "@/components/QuranSelector";
+import dynamic from 'next/dynamic'
+ 
+const QuranSelector = dynamic(() => import('@/components/QuranSelector'), {
+  ssr: false,
+})
 
 const page = () => {
+
   return (
-    <div className="">
+    <div>
       <QuranSelector />
     </div>
   );

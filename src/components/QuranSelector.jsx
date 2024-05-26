@@ -4,7 +4,6 @@ import quran1 from '@/../public/assets/images/quran2.jpg';
 import Image from 'next/image';
 import Loader from './Loader';
 import getChapterName from '@/app/utils/getChapterName';
-import generatePDFFrom from '@/app/utils/takeShot';
 import generatePDF from '@/app/utils/generatePDF';
 
 
@@ -18,7 +17,7 @@ const QuranSelector = () => {
   const [selectedVersesArabic, setSelectedVersesArabic] = useState([]);
   const [arabicData, setArabicData] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const isClient = typeof window !== "undefined";
   const fetchVerses = async (chapterNumber) => {
     try {
       setLoading(true);
@@ -75,7 +74,7 @@ const QuranSelector = () => {
     updatedArabicVerses.splice(index, 1);
     setSelectedVersesArabic(updatedArabicVerses);
   };
-
+  if (!isClient) return;
   return (
     <div className={`p-4 lg:w-[50%] mx-auto ${loading ? "opacity-50" : "opacity-100"} border-2`}
       style={{ fontFamily: 'var(--font-roboto)' }}

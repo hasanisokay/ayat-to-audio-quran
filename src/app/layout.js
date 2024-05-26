@@ -25,10 +25,16 @@ const myFont = localFont({
 
 export const metadata = {
   title: "Ayat To PDF",
-  description: "A free quran project by Hasan",
+  description: "A free Quran project by Hasan",
+  author: "Hasan",
+  keywords: ["Quran", "Ayat", "PDF", "Conversion", "Islamic Texts"],
+  creationDate: "2024-05-26",
+  modifiedDate: "2024-05-26",
 };
 
 export default function RootLayout({ children }) {
+  const isClient = typeof window !== "undefined";
+  if (!isClient) return;
   return (
     <html lang="en">
       <body className={`${inter.variable} ${myFont.variable} `}>{children}</body>
