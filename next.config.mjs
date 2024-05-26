@@ -3,7 +3,7 @@ const nextConfig = {
     webpack: (config, { isServer }) => {
         // Add the file-loader rule for handling .ttf files
         config.module.rules.push({
-          test: /\.(ttf|otf)$/i,
+          test: /\.(woff|woff2|eot|ttf|otf)$/,
           use: [
             {
               loader: 'file-loader',

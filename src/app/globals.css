@@ -2,15 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'noorehidayat';
-    src: url('/public/assets/font/noorehidayat.ttf') format('truetype');
+/* @font-face {
+    font-family: 'Noorehuda';
+    src: url('./../../public/assets/font/noorehuda.ttf') format('truetype');
     font-display: swap;
   }
   
   .arabic-font {
-    font-family: 'noorehidayat';
-  }
+    font-family: 'Noorehuda';
+  } */
 
   /* .bg-quran{
     background-image: url("./../../public/assets/images/quran1.jpg");
