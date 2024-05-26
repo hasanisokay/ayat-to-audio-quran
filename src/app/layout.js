@@ -33,8 +33,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const isClient = typeof window !== "undefined";
-  if (!isClient) return;
+
   return (
     <html lang="en">
       <body className={`${inter.variable} ${myFont.variable} `}>{children}</body>

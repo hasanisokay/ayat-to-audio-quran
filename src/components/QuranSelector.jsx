@@ -17,7 +17,6 @@ const QuranSelector = () => {
   const [selectedVersesArabic, setSelectedVersesArabic] = useState([]);
   const [arabicData, setArabicData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const isClient = typeof window !== "undefined";
   const fetchVerses = async (chapterNumber) => {
     try {
       setLoading(true);
@@ -74,7 +73,6 @@ const QuranSelector = () => {
     updatedArabicVerses.splice(index, 1);
     setSelectedVersesArabic(updatedArabicVerses);
   };
-  if (!isClient) return;
   return (
     <div className={`p-4 lg:w-[50%] mx-auto ${loading ? "opacity-50" : "opacity-100"} border-2`}
       style={{ fontFamily: 'var(--font-roboto)' }}
@@ -89,7 +87,7 @@ const QuranSelector = () => {
       </div>
       <h1 className='text-center text-2xl'
         style={{ fontFamily: 'var(--font-dancing-script)' }}
-      >Assalamu Alaykum</h1>
+      >Welcome</h1>
       {
         loading && <Loader />
       }

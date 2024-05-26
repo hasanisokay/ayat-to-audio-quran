@@ -7,9 +7,10 @@ const QuranSelector = dynamic(() => import('@/components/QuranSelector'), {
 const page = () => {
 
   return (
-    <div>
+    <>
+    <p>Hi</p>
       <QuranSelector />
-    </div>
+    </>
   );
 };
 
